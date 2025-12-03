@@ -4,3 +4,5 @@ project(Part01 C)
 set(CMAKE_C_STANDARD 23)
 
 add_executable(Part01 main.c)
+
+configure_file(input.txt input.txt COPYONLY)
