@@ -18,7 +18,6 @@ int main(void) {
         }
     }
 
-
     fclose(fptr);
 
     return 0;
