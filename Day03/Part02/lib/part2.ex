@@ -22,31 +22,28 @@ defmodule Part2 do
     |> Enum.to_list()
   end
 
-  def get_list_of_numbers(numberString) do
-    String.graphemes(numberString)
+  def get_list_of_numbers(number_string) do
+    String.graphemes(number_string)
     |> Enum.map(&String.to_integer/1)
   end
 
-  def get_first_highest_number(numberList) do
-    Enum.with_index(numberList)
+  def get_first_highest_number(number_list) do
+    Enum.with_index(number_list)
     |> Enum.max_by(fn {x, _} -> x end)
   end
 
-  def get_highest_left_right_pair(numberList, digitsRemaining \\ 12) do
-    {firstNumber, i} =
-      Enum.split(numberList, length(numberList) - (digitsRemaining - 1))
+  def get_highest_left_right_pair(number_list, digitsRemaining \\ 12) do
+    {first_number, i} =
+      Enum.split(number_list, length(number_list) - (digitsRemaining - 1))
       |> then(fn {trimmed, _} -> trimmed end)
       |> get_first_highest_number()
 
-    # {secondNumber, _} =
-    #   Enum.split(numberList, i + 1)
-    #   |> then(fn {_, tail} -> tail end)
-    #   |> get_first_highest_number()
+    tail = Enum.drop(number_list, i + 1)
 
     case digitsRemaining do
-      x when x > 1 -> (firstNumber * :math.pow(10, digitsRemaining - 1) +
-      get_highest_left_right_pair((Enum.split(numberList, i + 1) |> then(fn {_, tail} -> tail end)), (digitsRemaining - 1)))
-      x when x == 1 -> firstNumber
+      x when x > 1 -> (first_number * :math.pow(10, digitsRemaining - 1) +
+      get_highest_left_right_pair(tail, (digitsRemaining - 1)))
+      x when x == 1 -> first_number
     end
   end
 
