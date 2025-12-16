@@ -1,8 +1,22 @@
+from functools import reduce
+
 import numpy as np
+
+neighbours = [(-1, -1), (0, -1), (1, -1),
+              (-1,  0),          (1,  0),
+              (-1,  1), (0,  1), (1,  1)]
 
 def main(path):
     grid = add_padding(read_input(path))
-    print(grid)
+
+    count = 0
+
+    for x in range(1, len(grid) - 1):
+        for y in range(1, len(grid[0]) - 1):
+            if has_roll(grid, x, y) and has_fewer_than_four_neighbour_rolls(grid, x, y):
+                count += 1
+
+    print(count)
 
 # Read the input and return a 2D grid of Booleans
 def read_input(path):
@@ -20,5 +34,14 @@ def read_input(path):
 def add_padding(grid):
     return np.pad(grid, pad_width=1, mode='constant', constant_values=False)
 
+def get_neighbours(grid, x, y):
+    return list(map(lambda n: grid[x + n[0]][y + n[1]], neighbours))
+
+def has_roll(grid, x, y):
+    return grid[x][y] == True
+
+def has_fewer_than_four_neighbour_rolls(grid, x, y):
+    return reduce(lambda acc, n: acc + int(n), get_neighbours(grid, x, y)) < 4
+
 if __name__ == '__main__':
-    main('test-input.txt')
+    main('input.txt')
