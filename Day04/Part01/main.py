@@ -1,7 +1,10 @@
-def main(path):
-    print(read_input(path))
+import numpy as np
 
-# Read the input and return a 2D grid of Booleans with 1 cell of padding
+def main(path):
+    grid = add_padding(read_input(path))
+    print(grid)
+
+# Read the input and return a 2D grid of Booleans
 def read_input(path):
     with open(path) as f:
         lines = f.read().splitlines()
@@ -12,6 +15,10 @@ def read_input(path):
                 grid[i][j] = char == '@'
 
         return grid
+
+# Add padding to the grid, all False, so I don't have to do out-of-bounds checks later.
+def add_padding(grid):
+    return np.pad(grid, pad_width=1, mode='constant', constant_values=False)
 
 if __name__ == '__main__':
     main('test-input.txt')
