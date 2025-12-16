@@ -3,7 +3,7 @@ defmodule Part1Test do
   doctest Part1
 
   test "reads test input" do
-    assert Part1.read_lines("input.txt") == ["987654321111111", "811111111111119", "234234234234278", "818181911112111"]
+    assert Part1.read_lines("test-input.txt") == ["987654321111111", "811111111111119", "234234234234278", "818181911112111"]
   end
 
   test "converts string to list of digits" do
