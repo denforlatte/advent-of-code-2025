@@ -20,4 +20,8 @@ defmodule Part1Test do
     assert Part1.get_highest_left_right_pair([2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 7, 8]) == 78
     assert Part1.get_highest_left_right_pair([8, 1, 8, 1, 8, 1, 9, 1, 1, 1, 1, 2, 1, 1, 1]) == 92
   end
+
+  test "gets correct example value" do
+    assert Part1.get_total_joltage("test-input.txt") == 357
+  end
 end

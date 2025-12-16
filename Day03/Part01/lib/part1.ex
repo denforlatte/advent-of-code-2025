@@ -13,7 +13,7 @@ defmodule Part1 do
 
   """
   def main do
-    :world
+    IO.inspect(get_total_joltage("input.txt"))
   end
 
   def read_lines(path) do
@@ -42,5 +42,12 @@ defmodule Part1 do
     |> get_first_highest_number()
 
     firstNumber * 10 + secondNumber
+  end
+
+  def get_total_joltage(path) do
+    read_lines(path)
+    |> Enum.map(&get_list_of_numbers/1)
+    |> Enum.map(&get_highest_left_right_pair/1)
+    |> Enum.sum()
   end
 end
