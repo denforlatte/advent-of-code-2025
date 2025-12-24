@@ -9,18 +9,19 @@ procedure Part1 is
    Is_Numbers: Boolean := False;
    Ranges_Low: Array (1 .. 400) of Integer;
    Ranges_High: Array (1 .. 400) of Integer;
+   Number_of_Ranges: Natural := 0;
    Numbers: Array (1 .. 2000) of Integer;
+   Number_of_Numbers: Natural := 0;
    Array_Pointer: Natural := 1;
 begin
-   Put_Line ("Hello world!");
    Open (File, In_File, "test-input.txt");
    while not End_Of_File (File) loop
       Get_Line (File, Line, Last);
-      Put_Line("Read line: " & "'" & Line (1 .. Last) & "'");
 
       if Is_Numbers = True then
-         Put_Line ("Ignoring line: " & Line (1 .. Last));
-         -- TODO: Add to a list.
+         Numbers (Array_Pointer) := Integer'Value (Line (1 .. Last));
+         Array_Pointer := Array_Pointer + 1;
+         Number_of_Numbers := Array_Pointer;
       end if;
 
       -- This acts like a switch on the blank line to switch from parsing ranges to numbers.
@@ -39,17 +40,18 @@ begin
             Low  := Integer'Value (Line (1 .. Dash - 1));
             High := Integer'Value (Line (Dash + 1 .. Last));
 
-            Put_Line (Integer'Image (Low) & " →" & Integer'Image (High));
-
             -- Add the ranges to a list. 
             Ranges_Low (Array_Pointer) := Low;
             Ranges_High (Array_Pointer) := High;
             Array_Pointer := Array_Pointer + 1;
+            Number_of_Ranges := Array_Pointer;
          end;
       end if;
    end loop;
 
-   -- TODO: Order the lists.
+   for index in 1..Number_of_Numbers loop
+      Put_Line(Integer'Image (Numbers (index)));
+   end loop;
    Close (File);
 end Part1;
 
