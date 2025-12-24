@@ -1,0 +1,18 @@
+{
+    "name": "Ada Development Container",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "AdaCore.ada"
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            }
+        }
+    },
+    "postCreateCommand": "chmod +x build.sh && mkdir -p bin obj && ./build.sh",
+    "remoteUser": "root"
+}
