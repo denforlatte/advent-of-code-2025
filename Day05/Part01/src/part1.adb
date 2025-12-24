@@ -7,12 +7,27 @@ procedure Part1 is
    Line: String (1 .. 100);
    Last: Natural;
    Is_Numbers: Boolean := False;
+   Ranges_Low: Array (1 .. 400) of Integer;
+   Ranges_High: Array (1 .. 400) of Integer;
+   Numbers: Array (1 .. 2000) of Integer;
+   Array_Pointer: Natural := 1;
 begin
    Put_Line ("Hello world!");
    Open (File, In_File, "test-input.txt");
    while not End_Of_File (File) loop
       Get_Line (File, Line, Last);
       Put_Line("Read line: " & "'" & Line (1 .. Last) & "'");
+
+      if Is_Numbers = True then
+         Put_Line ("Ignoring line: " & Line (1 .. Last));
+         -- TODO: Add to a list.
+      end if;
+
+      -- This acts like a switch on the blank line to switch from parsing ranges to numbers.
+      if Last = 0 then
+         Is_Numbers := True;
+         Array_Pointer := 1;
+      end if;
 
       if Is_Numbers = False then
          declare
@@ -25,17 +40,25 @@ begin
             High := Integer'Value (Line (Dash + 1 .. Last));
 
             Put_Line (Integer'Image (Low) & " →" & Integer'Image (High));
+
+            -- Add the ranges to a list. 
+            Ranges_Low (Array_Pointer) := Low;
+            Ranges_High (Array_Pointer) := High;
+            Array_Pointer := Array_Pointer + 1;
          end;
       end if;
-
-      -- This acts like a switch on the blank line to switch from parsing ranges to numbers.
-      if Last = 0 then
-         Is_Numbers := True;
-      end if;
-
-      if Is_Numbers = True then
-         Put_Line ("Ignoring line: " & Line (1 .. Last));
-      end if;
    end loop;
+
+   -- TODO: Order the lists.
    Close (File);
 end Part1;
+
+
+
+
+
+-- Steps for merging ranges but I don't think I want to.
+   -- 1. Loop through the list of ranges.
+   -- 2. For each range, loop through the REST OF the ranges.
+   -- 3. If there is overlap, take the lowest start and highest end.
+   -- 4. Remove the overlapping range from the list.
