@@ -14,9 +14,9 @@ procedure Part2 is
    Ranges_High_Collapsed: Array (1 .. 400) of Long_Integer;
    Number_Of_Ranges_Collapsed: Natural := 0;
    Array_Pointer: Natural := 1;
-   Number_Of_Matches: Natural := 0;
+   Number_Of_Matches: Long_Integer := 0;
 begin
-   Open (File, In_File, "test-input.txt");
+   Open (File, In_File, "input.txt");
    while not End_Of_File (File) loop
       Get_Line (File, Line, Last);
 
@@ -66,14 +66,18 @@ begin
                   for j in i..Number_Of_Ranges loop
                      Is_Merging := False;
                      Put_Line ("Testing range: " & Long_Integer'Image (Ranges_Low(j)) & " -> " & Long_Integer'Image (Ranges_High (j)));
-                     if Ranges_Low (j) /= 0 and Ranges_Low (j) < Low and Ranges_High (j) > Low then
+                     if Ranges_Low (j) /= 0 and Ranges_Low (j) <= Low and Ranges_High (j) >= Low then
                         Low := Ranges_Low (j);
                         Put_Line ("New Low:" & Long_Integer'Image (Ranges_Low (j)));
                         Is_Merging := true;
                      end if;
-                     if Ranges_High (j) /= 0 and Ranges_High (j) > High and Ranges_Low (j) < High then
+                     if Ranges_High (j) /= 0 and Ranges_High (j) >= High and Ranges_Low (j) <= High then
                         High := Ranges_High (j);
                         Put_Line ("New High:" & Long_Integer'Image (Ranges_High (j)));
+                        Is_Merging := true;
+                     end if;
+                     if Ranges_Low (j) /= 0 and Ranges_High (j) <= High and Ranges_Low (j) >= Low then
+                        Put_Line ("Deleting fully contained ranges");
                         Is_Merging := true;
                      end if;
 
@@ -97,13 +101,17 @@ begin
 
    for i in 1..Number_Of_Ranges_Collapsed loop
       Put_Line (Long_Integer'Image (Ranges_Low_Collapsed (i)) & " -> " & Long_Integer'Image (Ranges_High_Collapsed (i)));
+      Put_Line ("Adding: " & Long_Integer'Image (Ranges_High_Collapsed (i) - Ranges_Low_Collapsed (i) + 1));
+      Number_Of_Matches := Ranges_High_Collapsed (i) - Ranges_Low_Collapsed (i) + 1 + Number_Of_Matches;
    end loop;
-   Put_Line ("Number of ranges: " & Integer'Image (Number_Of_Ranges_Collapsed));
+   Put_Line ("Number of fresh ids: " & Long_Integer'Image (Number_Of_Matches));
    Close (File);
 end Part2;
 
 
--- 
+-- 394060826678121 - Too high
+-- 353916876101465 - Too high - Missed deleting ranges that were fully contained within another range
+-- 350939902751909 - Correct!
 
 
 -- Steps for merging ranges but I don't think I want to.
